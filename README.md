@@ -42,13 +42,6 @@ An interactive multi-asset portfolio dashboard and quantitative framework built 
 * **Data Sources:** `yfinance`
 * **Data Analysis & Visualization:** `pandas`, `numpy`, `matplotlib`, `seaborn`
 * **Risk Modeling:** Covariance matrix risk contribution decomposition, cumulative drawdowns, resampled regime performance analysis.
-
----
-
-## 📓 From Notebook to Dashboard
-
-The analysis started as an exploratory Jupyter notebook (`Multi_Asset_Portfolio_Monitor.ipynb`), where each question — performance, risk drivers, regime behavior, stress resilience — was investigated and answered in narrative form. The core calculations were then distilled into `portfolio_engine.py`, a reusable analytical engine, and wrapped in an interactive Streamlit interface (`app.py`) so allocation weights can be adjusted live instead of hardcoded.
-
 ---
 
 ## 📂 Project Structure

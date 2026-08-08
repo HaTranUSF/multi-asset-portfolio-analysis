@@ -23,6 +23,7 @@ An interactive multi-asset portfolio dashboard and quantitative framework built 
 1. **Growth & Capital Compounding:** Between 2016 and 2026, the hypothetical portfolio nearly tripled in value, growing from **$100,000 to ~$285,000**.
 2. **Equity Concentration in Risk Contribution:** While **SPY** makes up 50% of the portfolio weight, it accounts for **78.9% of total portfolio risk**. Combined with **VXUS (14.2%)**, equities drive **93.1%** of overall portfolio variance.
 3. **Diversification Benefits:** Combining non-correlated assets reduced total portfolio annualized volatility to **~10.7%** (compared to ~17.8% for SPY) and mitigated maximum drawdown to **~21%** (compared to ~34% for SPY and ~36% for VXUS).
+4. **Risk-Adjusted Return:** The portfolio's annualized **Sharpe Ratio of ~0.80** confirms that diversification didn't just reduce volatility, it preserved a reasonable return per unit of risk taken, consistent with a moderately risk-tolerant allocation.
 4. **Market Regime Resilience:** 
    * **Bull Markets:** Averaged **+2.63%** monthly return.
    * **Bear Markets:** Averaged **-1.11%** monthly return, demonstrating strong downside mitigation from Treasuries and Gold.

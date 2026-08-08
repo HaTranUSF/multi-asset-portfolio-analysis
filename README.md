@@ -39,7 +39,7 @@ An interactive multi-asset portfolio dashboard and quantitative framework built 
 
 * **Language:** Python 3.14
 * **Web Framework:** Streamlit
-* **Data Sources:** `yfinance`, `pandas_datareader` (FRED market data)
+* **Data Sources:** `yfinance`
 * **Data Analysis & Visualization:** `pandas`, `numpy`, `matplotlib`, `seaborn`
 * **Risk Modeling:** Covariance matrix risk contribution decomposition, cumulative drawdowns, resampled regime performance analysis.
 

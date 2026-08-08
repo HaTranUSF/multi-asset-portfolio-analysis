@@ -1,21 +1,47 @@
 import yfinance as yf
 import pandas as pd
-
-def run_portfolio_analysis(weights, start_date="2016-01-01", end_date="2026-08-01"):
+import numpy as np
+from datetime import datetime
+ 
+RISK_FREE_RATE = 0.02  
+ 
+ 
+def calculate_sharpe_ratio(returns, risk_free_rate=RISK_FREE_RATE, periods_per_year=252):
+    """Annualized Sharpe ratio for a daily returns series."""
+    risk_free_per_period = risk_free_rate / periods_per_year
+    excess_return = returns.mean() - risk_free_per_period
+    annualized_vol = returns.std() * np.sqrt(periods_per_year)
+    if annualized_vol == 0:
+        return np.nan
+    return excess_return / annualized_vol
+ 
+ 
+def run_portfolio_analysis(weights, start_date="2016-01-01", end_date=None):
+    if end_date is None:
+        end_date = datetime.today().strftime("%Y-%m-%d")
+ 
+    # Validate weights sum to 1 (within floating point tolerance)
+    total_weight = sum(weights.values())
+    if not np.isclose(total_weight, 1.0, atol=0.01):
+        raise ValueError(
+            f"Portfolio weights must sum to 100%. Current total: {total_weight:.1%}"
+        )
+ 
     tickers = list(weights.keys())
     prices = yf.download(tickers, start=start_date, end=end_date, auto_adjust=True)["Close"]
     returns = prices.pct_change().dropna()
-    
+ 
     # Portfolio Return & Value
     weights_series = pd.Series(weights)
     portfolio_returns = (returns * weights_series).sum(axis=1)
     cumulative = (1 + portfolio_returns).cumprod()
     portfolio_value = 100000 * cumulative
-    
+ 
     # Standard Risk Metrics
     volatility = portfolio_returns.std() * (252 ** 0.5)
     max_dd = ((cumulative - cumulative.cummax()) / cumulative.cummax()).min()
-    
+    sharpe = calculate_sharpe_ratio(portfolio_returns)
+ 
     # Risk Contribution Breakdown
     cov_matrix = returns.cov() * 252
     port_var = weights_series @ cov_matrix @ weights_series
@@ -23,37 +49,38 @@ def run_portfolio_analysis(weights, start_date="2016-01-01", end_date="2026-08-0
     marginal_contrib = cov_matrix @ weights_series
     risk_contrib = (weights_series * marginal_contrib) / port_vol
     risk_contrib_pct = risk_contrib / risk_contrib.sum()
-    
+ 
     # Stress Testing Calculations
     scenarios = {
         "Equity Crash": {"SPY": -0.20, "IEF": 0.05, "VXUS": -0.25, "GLD": 0.10},
         "Rate Shock": {"SPY": -0.10, "IEF": -0.08, "VXUS": -0.12, "GLD": 0.03},
         "Global Risk-Off": {"SPY": -0.30, "IEF": 0.10, "VXUS": -0.35, "GLD": 0.15}
     }
-    
+ 
     stress_results = []
     for scenario, shocks in scenarios.items():
         impact = sum(weights[asset] * shocks[asset] for asset in weights)
         stress_results.append({"Scenario": scenario, "Impact": f"{impact:.1%}"})
-        
+ 
     stress_df = pd.DataFrame(stress_results)
-    
+ 
     # Regime Analysis
     monthly_returns = returns.resample("ME").apply(lambda x: (1 + x).prod() - 1)
     regime = pd.Series("Neutral", index=monthly_returns.index)
     regime[monthly_returns["SPY"] > 0] = "Bull"
     regime[monthly_returns["SPY"] < 0] = "Bear"
     regime[monthly_returns["IEF"] < 0] = "Rising_Rate"
-    
+ 
     portfolio_monthly = portfolio_returns.resample("ME").apply(lambda x: (1 + x).prod() - 1)
     regime_df = pd.DataFrame({"Portfolio": portfolio_monthly, "Regime": regime})
     regime_summary = regime_df.groupby("Regime")["Portfolio"].agg(["mean", "std", "count"])
-
+ 
     return {
         "portfolio_value": portfolio_value,
         "final_value": portfolio_value.iloc[-1],
         "volatility": volatility,
         "max_drawdown": max_dd,
+        "sharpe_ratio": sharpe,
         "returns": returns,
         "risk_contributions": risk_contrib_pct,
         "stress_test_results": stress_df,

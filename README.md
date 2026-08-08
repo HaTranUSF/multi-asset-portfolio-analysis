@@ -82,4 +82,4 @@ pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-The app will open at `http://localhost:8501`. Adjust the sidebar sliders to test different allocations — the weights must sum to 100%.
+The app will open at `http://localhost:8501`. Adjust the sidebar sliders to test different allocations - the weights must sum to 100%.

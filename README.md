@@ -4,7 +4,7 @@ An interactive multi-asset portfolio dashboard and quantitative framework built 
 
 🚀 **[Live Interactive Dashboard](https://multi-asset-portfolio-analysis-9hsmazappwugibh5bqs4crm.streamlit.app/)**
 
- 🚀**[Link to my notebook](https://github.com/HaTranUSF/multi-asset-portfolio-analysis/blob/main/Analysis/Multi_Asset_Portfolio_Monitor_Performance%2C_Risk_%26_Market_Regime_Analysis.ipynb)
+🚀 **[Link to my notebook](https://github.com/HaTranUSF/multi-asset-portfolio-analysis/blob/main/Analysis/Multi_Asset_Portfolio_Monitor_Performance%2C_Risk_%26_Market_Regime_Analysis.ipynb)**
 
 ---
 
